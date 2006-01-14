@@ -1,0 +1,38 @@
+Revision history for Perl extension PITA::XML
+
+0.10    Sat 14 Jan 2006
+	- Name change to PITA::XML.
+	- Refactoring to support multiple roots for the document,
+	  and to allow for expansion to additional uses.
+
+0.07    Mon  2 Jan 2005
+	- Added the missing Class::Autouse dependency
+	- 13_configtiny.t failed without Config::Tiny
+	  (skipped wrong number of tests)
+
+0.06    Mon  2 Jan 2005
+	- Fixed a bug in the distname param-check regex
+
+0.05    Sun  1 Jan 2005
+	- More flexibility for the stdout and stderr params to Command and Test
+	- Fixed some documentation mistakes
+
+0.04    Sat 31 Dec 2005
+	- Various small tweaks and bug fixes
+	- Upgraded to newer M:I with Cygwin fixes
+
+0.03    Fri 30 Dec 2005
+	- Added the ability for PITA::XML::Request objects to coerce to
+	  and from Config::Tiny objects.
+
+0.02    Wed 28 Dec 2005
+	- Completed a reasonable first pass.
+	- Object model is done and working
+	- SAX Driver creates well-formed XML
+	- SAX Parser round-trips back to the objects
+	- Ready for the public to start poking.
+
+0.01_01 Mon 29 Nov 2005
+	- Initial demonstration implementation
+	- Implements basic structure
+	- Supports only the <platform> and <distribution> tags

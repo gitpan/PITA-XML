@@ -1,0 +1,29 @@
+abstract: ~
+author: 'Adam Kennedy <cpan@ali.as>, L<http://ali.as/>'
+build_requires:
+  File::Spec: 0.80
+  Test::More: 0.47
+distribution_type: module
+generated_by: Module::Install version 0.52
+license: perl
+name: PITA-XML
+no_index:
+  directory:
+    - inc
+    - t
+requires:
+  Carp: 0
+  Class::Autouse: 1.23
+  Config::Tiny: 2.00
+  File::Flock: 101.060501
+  File::ShareDir: 0.02
+  File::Which: 0.05
+  IO::File: 0
+  IO::Handle: 0
+  IO::Seekable: 0
+  IO::String: 1.06
+  Params::Util: 0.10
+  XML::SAX::ParserFactory: 0.13
+  XML::SAX::Writer: 0.43
+  XML::Validator::Schema: 1.08
+version: 0.10
