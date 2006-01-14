@@ -1,5 +1,5 @@
 NAME
-    PITA::XML::Report - Create, load, save and manipulate PITA-XML files
+    PITA::XML - Create, load, save and manipulate PITA-XML files
 
 STATUS
     This is an experimental release for demonstration purposes only.

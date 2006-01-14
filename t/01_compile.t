@@ -18,13 +18,13 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 20;
+use Test::More tests => 22;
 
 ok( $] > 5.005, 'Perl version is 5.004 or newer' );
 
 use_ok( 'PITA::XML' );
 
-foreach ( qw{File Report Install Request Platform Command Test SAXParser SAXDriver} ) {
+foreach ( qw{File Report Install Request Platform Guest Command Test SAXParser SAXDriver} ) {
 	my $c = "PITA::XML::$_";
 	ok( $c->VERSION, "$c is loaded" );
 	is( $PITA::XML::VERSION, $c->VERSION,

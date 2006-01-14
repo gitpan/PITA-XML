@@ -1,4 +1,4 @@
-abstract: ~
+abstract: 'Create, load, save and manipulate PITA-XML files'
 author: 'Adam Kennedy <cpan@ali.as>, L<http://ali.as/>'
 build_requires:
   File::Spec: 0.80
@@ -26,4 +26,5 @@ requires:
   XML::SAX::ParserFactory: 0.13
   XML::SAX::Writer: 0.43
   XML::Validator::Schema: 1.08
-version: 0.10
+  perl: 5.005
+version: 0.11

@@ -37,6 +37,7 @@ inc/Module/Install/WriteAll.pm
 lib/PITA/XML.pm
 lib/PITA/XML/Command.pm
 lib/PITA/XML/File.pm
+lib/PITA/XML/Guest.pm
 lib/PITA/XML/Install.pm
 lib/PITA/XML/Platform.pm
 lib/PITA/XML/Report.pm
@@ -53,6 +54,7 @@ share/pita-xml.xsd
 t/01_compile.t
 t/02_platform.t
 t/03_request.t
+t/04_guest.t
 t/05_test.t
 t/06_install.t
 t/10_sample.t

@@ -44,7 +44,7 @@ use Params::Util '_STRING';
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.10';
+	$VERSION = '0.11';
 }
 
 sub xml_entity { 'request' }

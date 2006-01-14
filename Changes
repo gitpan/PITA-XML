@@ -1,5 +1,8 @@
 Revision history for Perl extension PITA::XML
 
+0.11    Sun 15 Jan 2006
+	- Added PITA::XML::Guest (basic form)
+
 0.10    Sat 14 Jan 2006
 	- Name change to PITA::XML.
 	- Refactoring to support multiple roots for the document,

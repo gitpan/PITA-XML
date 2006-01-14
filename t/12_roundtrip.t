@@ -18,9 +18,16 @@ BEGIN {
 	}
 }
 
-use Test::More   tests => 17;
+use Test::More   tests => 33;
 use Params::Util '_INSTANCE';
 use PITA::XML ();
+
+sub dies_like {
+	my $code   = shift;
+	my $regexp = shift;
+	eval { &$code() };
+	like( $@, $regexp, $_[0] || 'Code dies like expected' );
+}
 
 
 
@@ -169,5 +176,50 @@ round_trip_ok( $report, 'Simple' );
 
 
 
+
+#####################################################################
+# Test a Guest object
+
+# Start with the most simple possible guest
+my $guest = PITA::XML::Guest->new(
+	driver => 'Local',
+	);
+isa_ok( $guest, 'PITA::XML::Guest' );
+
+SCOPE: {
+	# Save the Report object
+	my $output = '';
+	ok( $guest->write( \$output ), "Guest->write(SCALAR) returns true" );
+	like( $output, qr/\<guest xmlns/, 'Wrote XML' );
+
+	# Read it back in
+	my $guest2 = eval { PITA::XML::Guest->read( \$output ) };
+	is( $@, '', 'Parses back in again without error' );
+	isa_ok( $guest2, 'PITA::XML::Guest' );
+	is_deeply( $guest2, $guest, 'Round-trips ok' );
+}
+
+# Repeat this time with a platform
+ok( $guest->add_platform( $platform ), 'Added platform' );
+is( scalar($guest->platforms), 1, '->platforms returns 1' );
+isa_ok( ($guest->platforms)[0], 'PITA::XML::Platform' );
+dies_like( sub { $guest->add_platform('PITA::XML::Platform') },
+	qr/Did not provide a PITA::XML::Platform object/,
+	'->add_platform(bad) died as expected',
+);
+
+SCOPE: {
+	# Save the Report object
+	my $output = '';
+	ok( $guest->write( \$output ), "Guest->write(SCALAR) returns true" );
+	like( $output, qr/\<guest xmlns/, 'Wrote XML' );
+	like( $output, qr/\<platform/, 'Contains a platform' );
+
+	# Read it back in
+	my $guest2 = eval { PITA::XML::Guest->read( \$output ) };
+	is( $@, '', 'Parses back in again without error' );
+	isa_ok( $guest2, 'PITA::XML::Guest' );
+	is_deeply( $guest2, $guest, 'Round-trips ok' );	
+}
 
 exit(0);

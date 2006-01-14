@@ -28,7 +28,7 @@ use PITA::XML      ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.10';
+	$VERSION = '0.11';
 }
 
 
@@ -187,6 +187,8 @@ sub parse {
 		$self->_parse_report( $root );
 	} elsif ( _INSTANCE($root, 'PITA::XML::Request') ) {
 		$self->_parse_request( $root );
+	} elsif ( _INSTANCE($root, 'PITA::XML::Guest') ) {
+		$self->_parse_guest( $root );
 	} else {
 		die("Support for " . ref($root) . " not implemented");
 	}
@@ -265,7 +267,7 @@ sub _parse_install {
 	return 1;
 }
 
-# Generate events for the request
+# Generate events for a request
 sub _parse_request {
 	my ($self, $request) = @_;
 
@@ -293,7 +295,29 @@ sub _parse_request {
 	return 1;
 }
 
-# Generate events for the platform configuration
+# Generate events for a guest
+sub _parse_guest {
+	my ($self, $guest) = @_;
+
+	# Send the open tag
+	my $element = $self->_element( 'guest' );
+	$self->start_element( $element );
+
+	# Send the main accessors
+	$self->_accessor_element( $guest, 'driver' );
+
+	# Iterate over the individual platforms
+	foreach my $platform ( $guest->platforms ) {
+		$self->_parse_platform( $platform );
+	}
+
+	# Send the close tag
+	$self->end_element($element);
+
+	return 1;
+}
+
+# Generate events for a platform configuration
 sub _parse_platform {
 	my ($self, $platform) = @_;
 

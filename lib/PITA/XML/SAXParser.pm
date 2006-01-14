@@ -34,16 +34,17 @@ use Params::Util '_INSTANCE';
 
 use vars qw{$VERSION $XML_NAMESPACE @PROPERTIES %TRIM};
 BEGIN {
-	$VERSION = '0.10';
+	$VERSION = '0.11';
 
 	# Define the XML namespace we are a parser for
 	$XML_NAMESPACE = 'http://ali.as/xml/schemas/PITA/1.0';
 
 	# The name/tags for the simple properties
 	@PROPERTIES = qw{
-		scheme  distname   filename
-		md5sum  authority  authpath
-		cmd     path       system
+		driver
+		scheme    distname   filename
+		md5sum    authority  authpath
+		cmd       path       system
 		exitcode
 	};
 
@@ -165,19 +166,19 @@ sub start_element {
 		. ' does not support the use of XML namespaces (yet)' );
 	}
 
-	# Shortcut if we don't implement a handler
-	my $handler = 'start_element_' . $element->{LocalName};
-	return 1 unless $self->can($handler);
-
 	# If this is the root element, set up the initial context.
 	# (and thus don't use the normal handler)
 	unless ( @{$self->{context}} ) {
 		unless ( $element->{LocalName} eq $self->{root} ) {
-			Carp::croak( 'Root element must be a <$self->{root}>' );
+			Carp::croak( "Root element must be a <$self->{root}>" );
 		}
 		$self->_push( $self->{object} );
 		return 1;
 	}
+
+	# Shortcut if we don't implement a handler
+	my $handler = 'start_element_' . $element->{LocalName};
+	return 1 unless $self->can($handler);
 
 	# Hand off to the handler
 	my $hash = $self->_hash($element->{Attributes});
@@ -187,15 +188,15 @@ sub start_element {
 sub end_element {
 	my ($self, $element) = @_;
 
-	# Hand off to the optional tag-specific handler
-	my $handler = 'end_element_' . $element->{LocalName};
-	return 1 unless $self->can($handler);
-
 	# Handle the closing root element
 	if ( $element->{LocalName} eq $self->{root} and @{$self->{context}} == 1 ) {
 		$self->_pop->_init;
 		return 1;
 	}
+
+	# Hand off to the optional tag-specific handler
+	my $handler = 'end_element_' . $element->{LocalName};
+	return 1 unless $self->can($handler);
 
 	# If there is anything in the character buffer, trim whitespace
 	if ( exists $self->{chars} and defined $self->{chars} ) {
@@ -220,20 +221,6 @@ sub characters {
 
 	1;
 }
-
-
-
-
-
-#####################################################################
-# Simplified Tag-Specific Event Handlers
-# The simplified event handlers are passed arguments in the forms
-# start_element_foo( $self, \%attribute_hash )
-# end_element_foo  ( $self )
-
-# Ignore the actual report tag
-sub start_element_report { 1 }
-sub   end_element_report { 1 }
 
 
 
@@ -290,8 +277,13 @@ sub start_element_platform {
 sub end_element_platform {
 	my $self = shift;
 
-	# Complete the Platform and add to the Install
-	$self->_context->{platform} = $self->_pop->_init;
+	# Complete the Platform and add to the parent Install/Guest
+	my $platform = $self->_pop->_init;
+	if ( _INSTANCE($self->_context, 'PITA::XML::Install') ) {
+		$self->_context->{platform} = $platform;
+	} elsif ( _INSTANCE($self->_context, 'PITA::XML::Guest') ) {
+		$self->_context->add_platform( $platform );
+	}
 
 	1;
 }

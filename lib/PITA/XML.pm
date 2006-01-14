@@ -2,6 +2,7 @@ package PITA::XML;
 
 # See POD at end for docs.
 
+use 5.005;
 use strict;
 use Carp                    ();
 use Params::Util            ':ALL';
@@ -23,7 +24,7 @@ use XML::Validator::Schema  ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.10';
+	$VERSION = '0.11';
 }
 
 # The XML Schema File
@@ -50,12 +51,13 @@ BEGIN {
 
 # Load the various classes
 use PITA::XML::File      ();
-use PITA::XML::Report    ();
-use PITA::XML::Install   ();
-use PITA::XML::Request   ();
-use PITA::XML::Platform  ();
 use PITA::XML::Command   ();
 use PITA::XML::Test      ();
+use PITA::XML::Request   ();
+use PITA::XML::Platform  ();
+use PITA::XML::Guest     ();
+use PITA::XML::Install   ();
+use PITA::XML::Report    ();
 use PITA::XML::SAXParser ();
 use PITA::XML::SAXDriver ();
 
@@ -164,7 +166,7 @@ __END__
 
 =head1 NAME
 
-PITA::XML::Report - Create, load, save and manipulate PITA-XML files
+PITA::XML - Create, load, save and manipulate PITA-XML files
 
 =head1 STATUS
 
