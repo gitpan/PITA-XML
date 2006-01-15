@@ -44,7 +44,7 @@ use Params::Util '_STRING';
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.11';
+	$VERSION = '0.12';
 }
 
 sub xml_entity { 'request' }
@@ -240,25 +240,6 @@ For non-CPAN distributions, returns false (the null string).
 
 sub authpath {
 	$_[0]->{authpath};
-}
-
-
-
-
-#####################################################################
-# Coercion Methods
-
-sub __as_Config_Tiny {
-	my $self   = shift;
-	my $config = Config::Tiny->new;
-	$config->{_} = { %$self }; # A little hacky, but simple
-	$config;
-}
-
-sub __from_Config_Tiny {
-	my ($class, $config) = @_;
-	my $section = $config->{_} || {};
-	$class->new( %$section );
 }
 
 1;

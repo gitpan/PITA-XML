@@ -14,7 +14,6 @@ no_index:
 requires:
   Carp: 0
   Class::Autouse: 1.23
-  Config::Tiny: 2.00
   File::Flock: 101.060501
   File::ShareDir: 0.02
   File::Which: 0.05
@@ -27,4 +26,4 @@ requires:
   XML::SAX::Writer: 0.43
   XML::Validator::Schema: 1.08
   perl: 5.005
-version: 0.11
+version: 0.12

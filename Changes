@@ -1,5 +1,10 @@
 Revision history for Perl extension PITA::XML
 
+0.12    Sun 15 Jan 2006
+	- Removing the use of Config::Tiny as an alternative
+	  serialization for for PITA::XML::Request objects now
+	  that it's trivial to do them natively in XML.
+
 0.11    Sun 15 Jan 2006
 	- Added PITA::XML::Guest (basic form)
 
