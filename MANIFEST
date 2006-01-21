@@ -62,4 +62,6 @@ t/11_saxdriver.t
 t/12_roundtrip.t
 t/99_pod.t
 t/samples/empty.pita
+t/samples/guest.img
+t/samples/guest.pita
 t/samples/single.pita

@@ -1,29 +1,30 @@
-abstract: 'Create, load, save and manipulate PITA-XML files'
-author: 'Adam Kennedy <cpan@ali.as>, L<http://ali.as/>'
-build_requires:
-  File::Spec: 0.80
-  Test::More: 0.47
-distribution_type: module
-generated_by: Module::Install version 0.52
-license: perl
-name: PITA-XML
-no_index:
-  directory:
+
+no_index: 
+  directory: 
     - inc
     - t
-requires:
-  Carp: 0
-  Class::Autouse: 1.23
-  File::Flock: 101.060501
-  File::ShareDir: 0.02
-  File::Which: 0.05
-  IO::File: 0
-  IO::Handle: 0
-  IO::Seekable: 0
-  IO::String: 1.06
-  Params::Util: 0.10
+generated_by: Module::Install version 0.54
+distribution_type: module
+version: 0.13
+name: PITA-XML
+author: Adam Kennedy <cpan@ali.as>, L<http://ali.as/>
+license: perl
+build_requires: 
+  Test::More: 0.47
+  File::Spec: 0.80
+requires: 
   XML::SAX::ParserFactory: 0.13
-  XML::SAX::Writer: 0.43
+  Class::Autouse: 1.23
+  IO::Seekable: 0
+  IO::File: 0
+  IO::String: 1.06
+  IO::Handle: 0
+  File::Which: 0.05
+  Carp: 0
   XML::Validator::Schema: 1.08
   perl: 5.005
-version: 0.12
+  File::Flock: 101.060501
+  Params::Util: 0.10
+  File::ShareDir: 0.02
+  XML::SAX::Writer: 0.43
+abstract: Create, load, save and manipulate PITA-XML files

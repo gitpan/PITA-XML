@@ -7,7 +7,7 @@ use Params::Util '_INSTANCE';
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.12';
+	$VERSION = '0.13';
 }
 
 
@@ -29,7 +29,7 @@ sub read {
 	#	);
 
 	# Build the object from the file and validate
-	my $self   = bless {}, $class;
+	my $self = bless {}, $class;
 	my $parser = XML::SAX::ParserFactory->parser(
 		Handler => PITA::XML::SAXParser->new( $self ),
 		);
