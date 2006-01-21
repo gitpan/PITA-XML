@@ -37,7 +37,7 @@ use Params::Util '_IDENTIFIER',
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.15';
+	$VERSION = '0.16';
 }
 
 sub xml_entity { 'guest' }

@@ -18,7 +18,7 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 31;
+use Test::More tests => 35;
 use PITA::XML ();
 
 my $md5sum = '0123456789ABCDEF0123456789ABCDEF';
@@ -207,5 +207,20 @@ new_dies_like(
 	qr/Invalid authpath/,
 	'->new(bad authpath) dies like expected',
 );
+
+
+
+
+
+#####################################################################
+# Load a request, and then locate the real file
+
+my $file = catfile( 't', 'request', 'request.pita' );
+ok( -f $file, 'Test file exists' );
+my $request = PITA::XML::Request->read( $file );
+isa_ok( $request, 'PITA::XML::Request' );
+my $tarball = $request->find_file( $file );
+ok( $tarball, 'Got a tarball' );
+ok( -f $tarball, 'Tarball file exists' );
 
 exit(0);

@@ -1,5 +1,8 @@
 Revision history for Perl extension PITA::XML
 
+0.16 Sun 22 Jan 2006
+	- Adding PITA::XML::Request->find_file method
+
 0.15 Sun 22 Jan 2006
 	- Add support for identifiers for Request objects
 

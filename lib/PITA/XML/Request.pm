@@ -38,13 +38,15 @@ repository such as CPAN)
 
 use strict;
 use base 'PITA::XML::File';
-use Carp         ();
-use Config::Tiny ();
-use Params::Util '_STRING';
+use Carp           ();
+use File::Spec     ();
+use File::Basename ();
+use Config::Tiny   ();
+use Params::Util   '_STRING';
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.15';
+	$VERSION = '0.16';
 }
 
 sub xml_entity { 'request' }
@@ -261,6 +263,33 @@ For non-CPAN distributions, returns false (the null string).
 
 sub authpath {
 	$_[0]->{authpath};
+}
+
+=pod
+
+=head2 find_file $base
+
+The C<find_file> method takes a file or directory as a param (which
+must exist) and tries to locate the actual file on disk at a location
+within or relative to the passed path.
+
+Returns the merge path to the file (if it exists) or C<undef> if not.
+
+=cut
+
+sub find_file {
+	my $self = shift;
+	my $path = shift;
+	if ( -f $path ) {
+		$path = File::Basename::dirname($path);
+	}
+	unless ( -d $path ) {
+		Carp::croak("Invalid or non-existant base path");
+	}
+
+	# Add the filename to the base dir
+	my $file = File::Spec->catfile( $path, $self->filename );
+	return -f $file ? $file : undef;
 }
 
 1;
