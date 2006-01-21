@@ -44,7 +44,7 @@ use Params::Util '_STRING';
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.14';
+	$VERSION = '0.15';
 }
 
 sub xml_entity { 'request' }
@@ -71,6 +71,13 @@ sub new {
 # Format-check the parameters
 sub _init {
 	my $self = shift;
+
+	# Check the id, if it has one
+	if ( defined $self->id ) {
+		unless ( _STRING($self->id) ) {
+			Carp::croak('Invalid id value');
+		}
+	}
 
 	# Check the scheme
 	unless ( PITA::XML->_SCHEME($self->scheme) ) {
@@ -127,6 +134,20 @@ sub _init {
 
 	$self;
 }
+
+=pod
+
+=head2 id
+
+The C<id> accessor returns the unique identifier of the request, if
+it has one. This will generally be some form of L<Data::UUID> string.
+
+Returns the identifier as a string, or C<undef> if the request has not
+been assigned an id.
+
+=cut
+
+sub id { $_[0]->{id} }
 
 =pod
 

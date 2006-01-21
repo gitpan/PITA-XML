@@ -28,7 +28,7 @@ use PITA::XML      ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.14';
+	$VERSION = '0.15';
 }
 
 
@@ -272,7 +272,10 @@ sub _parse_request {
 	my ($self, $request) = @_;
 
 	# Send the open tag
-	my $element = $self->_element( 'request' );
+	my $attr = $request->id
+		? { id => $request->id }
+		: { };
+	my $element = $self->_element( 'request', $attr );
 	$self->start_element( $element );
 
 	# Send the main accessors
@@ -491,7 +494,18 @@ sub _element {
 
 	# Convert the attributes to the full version
 	my %Attributes = ();
-	foreach my $key ( keys %$attrs ) {
+	if ( $attrs->{xmlns} ) {
+		# The xmlns attribute is always first
+		my $value = delete $attrs->{xmlns};
+		$Attributes{xmlns} = {
+			Name         => 'xmlns',
+			#NamespaceURI => $NamespaceURI,
+			#Prefix       => $Prefix,
+			#LocalName    => $key,
+			Value        => $value,
+			};
+	}
+	foreach my $key ( sort keys %$attrs ) {
 		#$Attributes{"{$NamespaceURI}$key"} = {
 		$Attributes{$key} = {
 			Name         => $Prefix . $key,

@@ -34,7 +34,7 @@ use Params::Util '_INSTANCE';
 
 use vars qw{$VERSION $XML_NAMESPACE @PROPERTIES %TRIM};
 BEGIN {
-	$VERSION = '0.14';
+	$VERSION = '0.15';
 
 	# Define the XML namespace we are a parser for
 	$XML_NAMESPACE = 'http://ali.as/xml/schemas/PITA/1.0';
@@ -172,6 +172,14 @@ sub start_element {
 		unless ( $element->{LocalName} eq $self->{root} ) {
 			Carp::croak( "Root element must be a <$self->{root}>" );
 		}
+
+		# Support ids in the root object
+		my $hash = $self->_hash($element->{Attributes});
+		if ( defined $hash->{id} ) {
+			$self->{object}->{id} = $hash->{id};
+		}
+
+		# Set up the root object as the root context
 		$self->_push( $self->{object} );
 		return 1;
 	}
@@ -251,7 +259,16 @@ sub end_element_install {
 # Handle the <request>...</request> tag
 
 sub start_element_request {
-	$_[0]->_push( bless {}, 'PITA::XML::Request' );
+	my $self    = shift;
+	my $request = bless {}, 'PITA::XML::Request';
+
+	# Add the id if it has one
+	my $attr = shift;
+	if ( defined $attr->{id} ) {
+		$request->{id} = $attr->{id};
+	}
+
+	$self->_push( $request );
 }
 
 sub end_element_request {

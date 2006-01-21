@@ -1,5 +1,8 @@
 Revision history for Perl extension PITA::XML
 
+0.15 Sun 22 Jan 2006
+	- Add support for identifiers for Request objects
+
 0.14 Sun 22 Jan 2006
 	- Forgot to add support for the 0.13 changes to SAXDriver.pm
 
