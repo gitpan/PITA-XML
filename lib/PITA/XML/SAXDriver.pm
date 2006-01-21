@@ -28,7 +28,7 @@ use PITA::XML      ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.13';
+	$VERSION = '0.14';
 }
 
 
@@ -305,6 +305,21 @@ sub _parse_guest {
 
 	# Send the main accessors
 	$self->_accessor_element( $guest, 'driver' );
+	if ( defined $guest->filename ) {
+		$self->_accessor_element( $guest, 'filename' );
+		$self->_accessor_element( $guest, 'md5sum'   );
+	}
+
+	# Send each of the config variables
+	my $config = $guest->config;
+	foreach my $name ( sort keys %$config ) {
+		my $el = $self->_element( 'config', { name => $name } );
+		$self->start_element( $el );
+		defined($config->{$name})
+			? $self->characters( $config->{$name} )
+			: $self->_undef;
+		$self->end_element( $el );
+	}
 
 	# Iterate over the individual platforms
 	foreach my $platform ( $guest->platforms ) {

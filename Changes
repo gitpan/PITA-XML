@@ -1,5 +1,8 @@
 Revision history for Perl extension PITA::XML
 
+0.14 Sun 22 Jan 2006
+	- Forgot to add support for the 0.13 changes to SAXDriver.pm
+
 0.13 Sun 22 Jan 2006
 	- Added support for ->filename and <filename> to below <guest>
 	- Added support for ->md5sum   and <md5sum>   to below <guest>

@@ -182,7 +182,11 @@ round_trip_ok( $report, 'Simple' );
 
 # Start with the most simple possible guest
 my $guest = PITA::XML::Guest->new(
-	driver => 'Local',
+	driver   => 'ImageTest',
+	filename => 'foo.img',
+	md5sum   => '01234567890123456789012345678901',
+	memory   => 256,
+	snapshot => 1,
 	);
 isa_ok( $guest, 'PITA::XML::Guest' );
 
@@ -221,5 +225,6 @@ SCOPE: {
 	isa_ok( $guest2, 'PITA::XML::Guest' );
 	is_deeply( $guest2, $guest, 'Round-trips ok' );	
 }
+
 
 exit(0);
