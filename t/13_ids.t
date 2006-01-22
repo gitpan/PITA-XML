@@ -70,9 +70,9 @@ is( $distid->authpath,  '', '->authpath returns "" as expected'             );
 # Write out to XML
 my $output = '';
 ok( $distid->write( \$output ), '->write returns ok' );
-my $expected = <<'END_XML';
+my $expected = <<"END_XML";
 <?xml version='1.0' encoding='UTF-8'?>
-<request xmlns='http://ali.as/xml/schema/pita-xml/0.16' id='1234'>
+<request xmlns='http://ali.as/xml/schema/pita-xml/$PITA::XML::Request::VERSION' id='1234'>
 <scheme>perl5</scheme>
 <distname>Foo-Bar</distname>
 <filename>Foo-Bar-0.01.tar.gz</filename>

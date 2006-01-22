@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<guest xmlns='http://ali.as/xml/schema/pita-xml/0.16'>
-	<driver>ImageTest</driver>
+<guest xmlns='http://ali.as/xml/schema/pita-xml/0.17'>
+	<driver>Image::Test</driver>
 	<filename>guest.img</filename>
 	<md5sum>ABCDEFabcd0123456789abcdefABCD01</md5sum>
 	<config name="memory">256</config>

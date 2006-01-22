@@ -49,7 +49,7 @@ SCOPE: {
 
 # Create another one with more details
 my @params = (
-	driver   => 'ImageTest',
+	driver   => 'Image::Test',
 	filename => 'guest.img',
 	md5sum   => 'ABCDEFABCD0123456789ABCDEFABCD01',
 	memory   => 256,
@@ -58,7 +58,7 @@ my @params = (
 SCOPE: {
 	my $dist = PITA::XML::Guest->new( @params );
 	isa_ok( $dist, 'PITA::XML::Guest' );
-	is( $dist->driver,  'ImageTest', '->driver matches expected' );
+	is( $dist->driver,  'Image::Test', '->driver matches expected' );
 	is( $dist->filename, 'guest.img', '->filename returns undef'  );
 	is( $dist->md5sum,   'abcdefabcd0123456789abcdefabcd01',
 		'->md5sum returns undef' );
@@ -72,7 +72,7 @@ SCOPE: {
 	ok( -f $file, 'Sample Guest file exists' );
 	my $dist = PITA::XML::Guest->read( $file );
 	isa_ok( $dist, 'PITA::XML::Guest' );
-	is( $dist->driver,  'ImageTest', '->driver matches expected' );
+	is( $dist->driver,  'Image::Test', '->driver matches expected' );
 	is( $dist->filename, 'guest.img', '->filename returns undef'  );
 	is( $dist->md5sum,   'abcdefabcd0123456789abcdefabcd01',
 		'->md5sum returns undef' );

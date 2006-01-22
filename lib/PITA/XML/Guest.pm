@@ -29,15 +29,15 @@ represented in L<PITA::XML> by L<PITA::XML::Platform> objects.
 use strict;
 use base 'PITA::XML::File';
 use Carp         ();
-use Params::Util '_IDENTIFIER',
-                 '_INSTANCE',
+use Params::Util '_INSTANCE',
                  '_STRING',
+                 '_CLASS',
                  '_HASH0',
                  '_SET0';
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.16';
+	$VERSION = '0.17';
 }
 
 sub xml_entity { 'guest' }
@@ -104,7 +104,7 @@ sub _init {
 	my $self = shift;
 
 	# Requires a driver
-	unless ( _IDENTIFIER($self->driver) ) {
+	unless ( _CLASS($self->driver) ) {
 		Carp::croak('Missing or invalid driver');
 	}
 

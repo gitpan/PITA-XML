@@ -1,5 +1,8 @@
 Revision history for Perl extension PITA::XML
 
+0.17 Mon 23 Jan 2006
+	- Allow namespaces in driver names
+
 0.16 Sun 22 Jan 2006
 	- Adding PITA::XML::Request->find_file method
 
