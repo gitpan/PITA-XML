@@ -45,7 +45,7 @@ use Params::Util '_STRING',
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.17';
+	$VERSION = '0.18';
 }
 
 

@@ -5,7 +5,7 @@ no_index:
     - t
 generated_by: Module::Install version 0.54
 distribution_type: module
-version: 0.17
+version: 0.18
 name: PITA-XML
 author: Adam Kennedy <cpan@ali.as>, L<http://ali.as/>
 license: perl
@@ -23,7 +23,6 @@ requires:
   Carp: 0
   XML::Validator::Schema: 1.08
   perl: 5.005
-  File::Flock: 101.060501
   Params::Util: 0.10
   File::ShareDir: 0.02
   XML::SAX::Writer: 0.43

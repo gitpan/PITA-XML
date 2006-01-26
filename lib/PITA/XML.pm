@@ -17,14 +17,14 @@ BEGIN {
 		@IO::String::ISA = qw{IO::Handle IO::Seekable};
 	}
 }
-use File::Flock             ();
+# use File::Flock             ();
 use File::ShareDir          ();
 use XML::SAX::ParserFactory ();
 use XML::Validator::Schema  ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.17';
+	$VERSION = '0.18';
 }
 
 # The XML Schema File

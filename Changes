@@ -1,5 +1,9 @@
 Revision history for Perl extension PITA::XML
 
+0.18 Thu 26 Jan 2006
+	- Requirement on File::Flock (which I'll be needing later on)
+	  was blocking building PITA-XML on Win32. Removed.
+
 0.17 Mon 23 Jan 2006
 	- Allow namespaces in driver names
 
