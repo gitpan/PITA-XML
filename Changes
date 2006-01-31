@@ -1,5 +1,9 @@
 Revision history for Perl extension PITA::XML
 
+0.19 Tue 21 Jan 2006
+	- Incremental release just in case I changed something in the recent
+	  massive refactorings to ::Scheme and ::Image
+
 0.18 Thu 26 Jan 2006
 	- Requirement on File::Flock (which I'll be needing later on)
 	  was blocking building PITA-XML on Win32. Removed.

@@ -24,7 +24,7 @@ use XML::Validator::Schema  ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.18';
+	$VERSION = '0.19';
 }
 
 # The XML Schema File
