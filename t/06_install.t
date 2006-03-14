@@ -42,29 +42,35 @@ sub dies_like {
 #####################################################################
 # Create the support objects
 
-my $md5sum  = '0123456789ABCDEF0123456789ABCDEF';
+my $md5sum  = 'MD5.0123456789abcdef0123456789abcdef';
 
 my $request = PITA::XML::Request->new(
 	scheme   => 'perl5',
 	distname => 'Foo-Bar',
-	filename => 'Foo-Bar-0.01.tar.gz',
-	md5sum   => $md5sum,
+	file     => PITA::XML::File->new(
+		filename => 'Foo-Bar-0.01.tar.gz',
+		digest   => $md5sum,
+		),
 	);
 isa_ok( $request, 'PITA::XML::Request' );
 
 my $request5make = PITA::XML::Request->new(
 	scheme   => 'perl5.make',
 	distname => 'Foo-Bar',
-	filename => 'Foo-Bar-0.01.tar.gz',
-	md5sum   => $md5sum,
+	file     => PITA::XML::File->new(
+		filename => 'Foo-Bar-0.01.tar.gz',
+		digest   => $md5sum,
+		),
 	);
 isa_ok( $request, 'PITA::XML::Request' );
 
 my $request6 = PITA::XML::Request->new(
 	scheme   => 'perl6',
 	distname => 'Foo-Bar',
-	filename => 'Foo-Bar-0.01.tar.gz',
-	md5sum   => $md5sum,
+	file     => PITA::XML::File->new(
+		filename => 'Foo-Bar-0.01.tar.gz',
+		digest   => $md5sum,
+		),
 	);
 isa_ok( $request, 'PITA::XML::Request' );
 

@@ -1,5 +1,10 @@
 Revision history for Perl extension PITA::XML
 
+0.29 Sat 11 Mar 2006
+	- Moved PITA::XML::File to PITA::XML::Storable
+	- Created skeleton PITA::XML::File for <guest><file> tags
+	- Wrote Data::Digest, and added a dependency on it
+
 0.20 Thu  2 Feb 2006
 	- Synchronising versions for PITA 0.20 release
 

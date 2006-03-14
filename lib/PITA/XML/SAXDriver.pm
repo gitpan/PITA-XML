@@ -28,7 +28,7 @@ use PITA::XML      ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.20';
+	$VERSION = '0.29';
 }
 
 
@@ -173,7 +173,7 @@ sub Output {
 
 sub parse {
 	my $self = shift;
-	my $root = _INSTANCE(shift, 'PITA::XML::File')
+	my $root = _INSTANCE(shift, 'PITA::XML::Storable')
 		or Carp::croak("Did not provide a writable root object");
 
 	# Attach the xmlns to the first tag
@@ -281,8 +281,9 @@ sub _parse_request {
 	# Send the main accessors
 	$self->_accessor_element( $request, 'scheme'   );
 	$self->_accessor_element( $request, 'distname' );
-	$self->_accessor_element( $request, 'filename' );
-	$self->_accessor_element( $request, 'md5sum'   );
+
+	# Send the file(s)
+	$self->_parse_file( $request->file );
 
 	# Send the optional authority information
 	if ( $request->authority ) {
@@ -308,9 +309,10 @@ sub _parse_guest {
 
 	# Send the main accessors
 	$self->_accessor_element( $guest, 'driver' );
-	if ( defined $guest->filename ) {
-		$self->_accessor_element( $guest, 'filename' );
-		$self->_accessor_element( $guest, 'md5sum'   );
+
+	# Iterate over the individual files
+	foreach my $file ( $guest->files ) {
+		$self->_parse_file( $file );
 	}
 
 	# Send each of the config variables
@@ -331,6 +333,39 @@ sub _parse_guest {
 
 	# Send the close tag
 	$self->end_element($element);
+
+	return 1;
+}
+
+# Generate events for a file
+sub _parse_file {
+	my ($self, $file) = @_;
+
+	# Send the open tag
+	my $element = $self->_element( 'file' );
+	$self->start_element( $element );
+
+	# Send the main accessors
+	$self->_accessor_element( $file, 'filename' );
+
+	# Send the optional resource name
+	if ( defined $file->resource ) {
+		my $el = $self->_element( 'resource' );
+		$self->start_element( $el );
+		$self->characters( $file->resource );
+		$self->end_element( $el );
+	}
+
+	# Send the optional digest
+	if ( defined $file->digest ) {
+		my $el = $self->_element( 'digest' );
+		$self->start_element( $el );
+		$self->characters( $file->digest->as_string );
+		$self->end_element( $el );
+	}
+
+	# Send the close tag
+	$self->end_element( $element );
 
 	return 1;
 }

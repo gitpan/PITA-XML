@@ -12,6 +12,7 @@ requires       'File::Which'             => '0.05';
 requires       'File::ShareDir'          => '0.02';
 requires       'Params::Util'            => '0.10';
 requires       'Class::Autouse'          => '1.23';
+requires       'Data::Digest'            => '0.02';
 requires       'XML::SAX::Writer'        => '0.43';
 requires       'XML::SAX::ParserFactory' => '0.13';
 requires       'XML::Validator::Schema'  => '1.08';

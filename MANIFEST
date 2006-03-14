@@ -44,6 +44,7 @@ lib/PITA/XML/Report.pm
 lib/PITA/XML/Request.pm
 lib/PITA/XML/SAXDriver.pm
 lib/PITA/XML/SAXParser.pm
+lib/PITA/XML/Storable.pm
 lib/PITA/XML/Test.pm
 LICENSE
 Makefile.PL
@@ -53,6 +54,7 @@ README
 share/pita-xml.xsd
 t/01_compile.t
 t/02_platform.t
+t/03_file.t
 t/03_request.t
 t/04_guest.t
 t/05_test.t

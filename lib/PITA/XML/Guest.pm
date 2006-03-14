@@ -27,7 +27,7 @@ represented in L<PITA::XML> by L<PITA::XML::Platform> objects.
 =cut
 
 use strict;
-use base 'PITA::XML::File';
+use base 'PITA::XML::Storable';
 use Carp         ();
 use Params::Util '_INSTANCE',
                  '_STRING',
@@ -37,7 +37,7 @@ use Params::Util '_INSTANCE',
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.20';
+	$VERSION = '0.29';
 }
 
 sub xml_entity { 'guest' }
@@ -51,8 +51,6 @@ sub xml_entity { 'guest' }
 
 my %ALLOWED = (
 	driver   => 1,
-	filename => 1,
-	md5sum   => 1,
 	config   => 1,
 	);
 
@@ -108,27 +106,15 @@ sub _init {
 		Carp::croak('Missing or invalid driver');
 	}
 
-	# Optional image filename
-	if ( defined $self->filename ) {
-		# Check the filepath
-		unless ( _STRING($self->filename) ) {
-			Carp::croak('Missing or invalid filename');
-		}
-
-		# md5sum is compulsory if the filename is given
-		if ( $self->{md5sum} ) {
-			$self->{md5sum} = PITA::XML->_MD5SUM($self->{md5sum});
-		}
-		unless ( PITA::XML->_MD5SUM($self->md5sum) ) {
-			Carp::croak('Missing or invalid md5sum');
-		}
-	} else {
-		delete $self->{md5sum};
-	}
-
 	# Check the configuration hash
 	unless ( _HASH0($self->config) ) {
 		Carp::croak('Invalid, missing, or empty config');
+	}
+
+	# Optional files
+	$self->{files} ||= [];
+	unless ( _SET0($self->{files}, 'PITA::XML::File') ) {
+		Carp::croak('Invalid files');
 	}
 
 	# Optional platforms
@@ -144,16 +130,24 @@ sub driver {
 	$_[0]->{driver};
 }
 
-sub filename {
-	$_[0]->{filename};
-}
-
-sub md5sum {
-	$_[0]->{md5sum};
-}
-
 sub config {
 	$_[0]->{config};
+}
+
+sub add_file {
+	my $self = shift;
+	my $file = _INSTANCE(shift, 'PITA::XML::File')
+		or Carp::croak('Did not provide a PITA::XML::File object');
+
+	# Add it to the array
+	$self->{files} ||= [];
+	push @{$self->{files}}, $file;
+
+	1;
+}
+
+sub files {
+	@{ $_[0]->{files} };
 }
 
 sub add_platform {

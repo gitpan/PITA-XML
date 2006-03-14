@@ -34,7 +34,7 @@ use Params::Util '_INSTANCE';
 
 use vars qw{$VERSION $XML_NAMESPACE @PROPERTIES %TRIM};
 BEGIN {
-	$VERSION = '0.20';
+	$VERSION = '0.29';
 
 	# Define the XML namespace we are a parser for
 	$XML_NAMESPACE = 'http://ali.as/xml/schemas/PITA/1.0';
@@ -42,9 +42,10 @@ BEGIN {
 	# The name/tags for the simple properties
 	@PROPERTIES = qw{
 		driver
-		scheme    distname   filename
-		md5sum    authority  authpath
-		cmd       path       system
+		scheme     distname
+		filename   resource  digest
+		authority  authpath
+		cmd        path      system
 		exitcode
 	};
 
@@ -99,8 +100,8 @@ Returns a new C<PITA::XML::SAXParser> object, or dies on error.
 
 sub new {
 	my $class  = shift;
-	my $root   = _INSTANCE(shift, 'PITA::XML::File')
-		or Carp::croak("Did not provide a PITA::XML::File root element");
+	my $root   = _INSTANCE(shift, 'PITA::XML::Storable')
+		or Carp::croak("Did not provide a PITA::XML::Storable root element");
 
 	# Create the basic parsing object
 	my $self = bless {
@@ -285,10 +286,35 @@ sub end_element_request {
 
 
 #####################################################################
+# Handle the <file>...</file> tag
+
+sub start_element_file {
+	$_[0]->_push( bless { }, 'PITA::XML::File' );
+}
+
+sub end_element_file {
+	my $self = shift;
+
+	# Complete the Platform and add to the parent Install/Guest
+	my $file = $self->_pop->_init;
+	if ( _INSTANCE($self->_context, 'PITA::XML::Guest') ) {
+		$self->_context->add_file( $file );
+	} elsif ( _INSTANCE($self->_context, 'PITA::XML::Request') ) {
+		$self->_context->{file} = $file;
+	}
+
+	1;
+}
+
+
+
+
+
+#####################################################################
 # Handle the <platform>...</platform> tag
 
 sub start_element_platform {
-	$_[0]->_push( bless { env => {}, config => {}, }, 'PITA::XML::Platform' );
+	$_[0]->_push( bless { env => {}, config => {} }, 'PITA::XML::Platform' );
 }
 
 sub end_element_platform {

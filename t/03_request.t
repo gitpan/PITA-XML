@@ -18,10 +18,17 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 35;
+use Test::More tests => 33;
 use PITA::XML ();
 
-my $md5sum = '0123456789ABCDEF0123456789ABCDEF';
+# Create a valid file for testing
+my $digest = 'MD5.5cf0529234bac9935fc74f9579cc5be8';
+my $file   = PITA::XML::File->new(
+	filename => 'Task-CVSMonitor-0.006003.tar.gz',
+	resource => 'package',
+	digest   => $digest,
+	);
+isa_ok( $file, 'PITA::XML::File' );
 
 sub dies_like {
 	my $code   = shift;
@@ -36,8 +43,7 @@ sub new_dies_like {
 	eval { PITA::XML::Request->new(
 		scheme    => 'perl5',
 		distname  => 'Task-CVSMonitor',
-		filename  => 'Task-CVSMonitor-0.006003.tar.gz',
-		md5sum    => '5cf0529234bac9935fc74f9579cc5be8',
+		file      => $file,
 		authority => 'cpan',
 		authpath  => '/authors/id/A/AD/ADAMK/Task-CVSMonitor-0.006003.tar.gz',
 		%$params,
@@ -57,13 +63,11 @@ sub new_dies_like {
 my $dist = PITA::XML::Request->new(
 	scheme   => 'perl5',
 	distname => 'Foo-Bar',
-	filename => 'Foo-Bar-0.01.tar.gz',
-	md5sum   => $md5sum,
+	file     => $file,
 	);
 isa_ok( $dist, 'PITA::XML::Request' );
 is( $dist->distname, 'Foo-Bar', '->distname matches expected'             );
-is( $dist->filename, 'Foo-Bar-0.01.tar.gz', '->filename matches expected' );
-is( $dist->md5sum,    lc($md5sum), '->md5sum is normalised as expected'   );
+isa_ok( $dist->file, 'PITA::XML::File' );
 is( $dist->authority, '', '->authority returns "" as expected'            );
 is( $dist->authpath,  '', '->authpath returns "" as expected'             );
 
@@ -71,17 +75,16 @@ is( $dist->authpath,  '', '->authpath returns "" as expected'             );
 my $cpan = PITA::XML::Request->new(
 	scheme    => 'perl5',
 	distname  => 'Task-CVSMonitor',
-	filename  => 'Task-CVSMonitor-0.006003.tar.gz',
-	md5sum    => '5cf0529234bac9935fc74f9579cc5be8',
+	file      => $file,
 	authority => 'cpan',
 	authpath  => '/authors/id/A/AD/ADAMK/Task-CVSMonitor-0.006003.tar.gz',
 	);
 isa_ok( $cpan, 'PITA::XML::Request' );
 is( $cpan->distname, 'Task-CVSMonitor',
 	'->distname matches expected' );
-is( $cpan->filename, 'Task-CVSMonitor-0.006003.tar.gz',
+is( $cpan->file->filename, 'Task-CVSMonitor-0.006003.tar.gz',
 	'->filename matches expected' );
-is( $cpan->md5sum, '5cf0529234bac9935fc74f9579cc5be8',
+is( $cpan->file->digest->as_string, 'MD5.5cf0529234bac9935fc74f9579cc5be8',
 	'->md5sum matches expected' );
 is( $cpan->authority, 'cpan',
 	'->authority returns as expected' );
@@ -92,15 +95,14 @@ is( $cpan->authpath, '/authors/id/A/AD/ADAMK/Task-CVSMonitor-0.006003.tar.gz',
 my $noauth = PITA::XML::Request->new(
 	scheme    => 'perl5',
 	distname  => 'Task-CVSMonitor',
-	filename  => 'Task-CVSMonitor-0.006003.tar.gz',
-	md5sum    => '5cf0529234bac9935fc74f9579cc5be8',
+	file      => $file,
 	);
 isa_ok( $noauth, 'PITA::XML::Request' );
 is( $noauth->distname, 'Task-CVSMonitor',
 	'->distname matches expected' );
-is( $noauth->filename, 'Task-CVSMonitor-0.006003.tar.gz',
+is( $noauth->file->filename, 'Task-CVSMonitor-0.006003.tar.gz',
 	'->filename matches expected' );
-is( $noauth->md5sum, '5cf0529234bac9935fc74f9579cc5be8',
+is( $noauth->file->digest->as_string, 'MD5.5cf0529234bac9935fc74f9579cc5be8',
 	'->md5sum matches expected' );
 is( $noauth->authority, '',
 	'->authority returns as expected' );
@@ -132,8 +134,7 @@ new_dies_like(
 isa_ok( PITA::XML::Request->new(
 	scheme    => 'x_foo',
 	distname  => 'Task-CVSMonitor',
-	filename  => 'Task-CVSMonitor-0.006003.tar.gz',
-	md5sum    => '5cf0529234bac9935fc74f9579cc5be8',
+	file      => $file,
 	authority => 'cpan',
 	authpath  => '/authors/id/A/AD/ADAMK/Task-CVSMonitor-0.006003.tar.gz',
 	), 'PITA::XML::Request' );
@@ -152,32 +153,18 @@ new_dies_like(
 	'->new(bad distname) dies like expected',
 );
 
-# Missing filename
+# Missing file
 new_dies_like(
-	{ filename => '' },
-	qr/Missing or invalid filename/,
-	'->new(missing filename) dies like expected',
+	{ file => '' },
+	qr/Missing or invalid file/,
+	'->new(missing file) dies like expected',
 );
 
-# Bad filename
+# Bad file
 new_dies_like(
-	{ filename => \'' },
-	qr/Missing or invalid filename/,
-	'->new(bad filename) dies like expected',
-);
-
-# Missing MD5
-new_dies_like(
-	{ md5sum => '' },
-	qr/Missing or invalid md5sum/,
-	'->new(missing md5sum) dies like expected',
-);
-
-# Bad MD5
-new_dies_like(
-	{ md5sum => '123456789012345678901ab' }, # 33 legal chars (not 32)
-	qr/Missing or invalid md5sum/,
-	'->new(bad md5sum) dies like expected',
+	{ file => \'' },
+	qr/Missing or invalid file/,
+	'->new(bad file) dies like expected',
 );
 
 # Missing authority
@@ -215,12 +202,14 @@ new_dies_like(
 #####################################################################
 # Load a request, and then locate the real file
 
-my $file = catfile( 't', 'request', 'request.pita' );
-ok( -f $file, 'Test file exists' );
-my $request = PITA::XML::Request->read( $file );
-isa_ok( $request, 'PITA::XML::Request' );
-my $tarball = $request->find_file( $file );
-ok( $tarball, 'Got a tarball' );
-ok( -f $tarball, 'Tarball file exists' );
+SCOPE: {
+	my $file = catfile( 't', 'request', 'request.pita' );
+	ok( -f $file, 'Test file exists' );
+	my $request = PITA::XML::Request->read( $file );
+	isa_ok( $request, 'PITA::XML::Request' );
+	my $tarball = $request->find_file( $file );
+	ok( $tarball, 'Got a tarball' );
+	ok( -f $tarball, 'Tarball file exists' );
+}
 
 exit(0);

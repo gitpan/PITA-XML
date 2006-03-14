@@ -3,9 +3,9 @@ no_index:
   directory: 
     - inc
     - t
-generated_by: Module::Install version 0.55
+generated_by: Module::Install version 0.60
 distribution_type: module
-version: 0.20
+version: 0.29
 name: PITA-XML
 author: Adam Kennedy <cpan@ali.as>, L<http://ali.as/>
 license: perl
@@ -26,4 +26,5 @@ requires:
   Params::Util: 0.10
   File::ShareDir: 0.02
   XML::SAX::Writer: 0.43
+  Data::Digest: 0.02
 abstract: Create, load, save and manipulate PITA-XML files

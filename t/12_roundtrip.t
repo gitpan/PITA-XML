@@ -18,7 +18,7 @@ BEGIN {
 	}
 }
 
-use Test::More   tests => 33;
+use Test::More   tests => 35;
 use Params::Util '_INSTANCE';
 use PITA::XML ();
 
@@ -96,8 +96,10 @@ isa_ok( $platform, 'PITA::XML::Platform' );
 my $request = PITA::XML::Request->new(
 	scheme    => 'perl5',
 	distname  => 'Foo-Bar',
-	filename  => 'Foo-Bar-0.01.tar.gz',
-	md5sum    => '5cf0529234bac9935fc74f9579cc5be8',
+	file      => PITA::XML::File->new(
+		filename  => 'Foo-Bar-0.01.tar.gz',
+		digest    => 'MD5.5cf0529234bac9935fc74f9579cc5be8',
+		),
 	authority => 'cpan',
 	authpath  => '/id/authors/A/AD/ADAMK/Foo-Bar-0.01.tar.gz',
 	);
@@ -181,14 +183,19 @@ round_trip_ok( $report, 'Simple' );
 # Test a Guest object
 
 # Start with the most simple possible guest
+my $file = PITA::XML::File->new(
+	filename => 'foo.img',
+	digest   => 'MD5.01234567890123456789012345678901',
+	);
+isa_ok( $file, 'PITA::XML::File' );
+
 my $guest = PITA::XML::Guest->new(
 	driver   => 'ImageTest',
-	filename => 'foo.img',
-	md5sum   => '01234567890123456789012345678901',
 	memory   => 256,
 	snapshot => 1,
 	);
 isa_ok( $guest, 'PITA::XML::Guest' );
+ok( $guest->add_file( $file ), 'Added file' );
 
 SCOPE: {
 	# Save the Report object

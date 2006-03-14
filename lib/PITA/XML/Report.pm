@@ -2,14 +2,14 @@ package PITA::XML::Report;
 
 use 5.005;
 use strict;
-use base 'PITA::XML::File';
+use base 'PITA::XML::Storable';
 use Carp         ();
 use Params::Util '_INSTANCE',
                  '_SET0';
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.20';
+	$VERSION = '0.29';
 }
 
 sub xml_entity { 'report' }

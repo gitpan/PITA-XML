@@ -24,7 +24,7 @@ use XML::Validator::Schema  ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.20';
+	$VERSION = '0.29';
 }
 
 # The XML Schema File
@@ -50,11 +50,12 @@ BEGIN {
 }
 
 # Load the various classes
-use PITA::XML::File      ();
+use PITA::XML::Storable  ();
 use PITA::XML::Command   ();
 use PITA::XML::Test      ();
 use PITA::XML::Request   ();
 use PITA::XML::Platform  ();
+use PITA::XML::File      ();
 use PITA::XML::Guest     ();
 use PITA::XML::Install   ();
 use PITA::XML::Report    ();

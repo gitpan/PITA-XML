@@ -10,17 +10,19 @@ PITA::XML::Request - A request for the testing of a software package
 
   # Create a request specification
   my $dist = PITA::XML::Request->new(
-  	scheme    => 'perl5',
-  	distname  => 'PITA-XML',
+      scheme    => 'perl5',
+      distname  => 'PITA-XML',
   
-  	# File properties
-  	filename  => 'Foo-Bar-0.01.tar.gz',
-  	md5sum    => '0123456789ABCDEF0123456789ABCDEF',
+      # The package to test
+      file      => PITA::XML::File->new(
+          filename  => 'Foo-Bar-0.01.tar.gz',
+          digest    => 'MD5.0123456789ABCDEF0123456789ABCDEF',
+          ),
  
-  	# Optional fields for repository-based requests
-  	authority => 'cpan',
-  	authpath  => '/id/A/AD/ADAMK/Foo-Bar-0.01.tar.gz',
-  	);
+      # Optional fields for repository-based requests
+      authority => 'cpan',
+      authpath  => '/id/A/AD/ADAMK/Foo-Bar-0.01.tar.gz',
+      );
 
 =head1 DESCRIPTION
 
@@ -37,16 +39,17 @@ repository such as CPAN)
 =cut
 
 use strict;
-use base 'PITA::XML::File';
+use base 'PITA::XML::Storable';
 use Carp           ();
 use File::Spec     ();
 use File::Basename ();
 use Config::Tiny   ();
-use Params::Util   '_STRING';
+use Params::Util   '_INSTANCE',
+                   '_STRING';
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.20';
+	$VERSION = '0.29';
 }
 
 sub xml_entity { 'request' }
@@ -92,17 +95,9 @@ sub _init {
 		Carp::croak('Missing or invalid distname');
 	}
 
-	# Check the filepath
-	unless ( _STRING($self->filename) ) {
-		Carp::croak('Missing or invalid filename');
-	}
-
-	# Normalize and check the md5sum
-	if ( $self->{md5sum} ) {
-		$self->{md5sum} = PITA::XML->_MD5SUM($self->{md5sum});
-	}
-	unless ( PITA::XML->_MD5SUM($self->md5sum) ) {
-		Carp::croak('Missing or invalid md5sum');
+	# Check the (required) file
+	unless ( _INSTANCE($self->file, 'PITA::XML::File') ) {
+		Carp::croak('Missing or invalid file');
 	}
 
 	# Is there an authority
@@ -214,27 +209,15 @@ sub distname {
 
 =pod
 
-=head2 filename
+=head2 file
 
-The C<filename> accessor returns ...
-
-=cut
-
-sub filename {
-	$_[0]->{filename};
-}
-
-=pod
-
-=head2 md5sum
-
-The C<md5sum> accessor returns the MD5 sum for package. This is only used
-as a CRC and isn't assumed to be cryptographically secure.
+The C<file> accessor returns the L<PITA::XML::File> that contains the
+package to test.
 
 =cut
 
-sub md5sum {
-	$_[0]->{md5sum};
+sub file {
+	$_[0]->{file};
 }
 
 =pod
@@ -288,7 +271,7 @@ sub find_file {
 	}
 
 	# Add the filename to the base dir
-	my $file = File::Spec->catfile( $path, $self->filename );
+	my $file = File::Spec->catfile( $path, $self->file->filename );
 	return -f $file ? $file : undef;
 }
 

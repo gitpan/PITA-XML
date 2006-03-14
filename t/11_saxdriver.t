@@ -18,7 +18,7 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 37;
+use Test::More tests => 40;
 use Config           ();
 use PITA::XML        ();
 use XML::SAX::Writer ();
@@ -142,11 +142,39 @@ END_XML
 
 
 
+my $file = PITA::XML::File->new(
+	filename  => 'Foo-Bar-0.01.tar.gz',
+	digest    => 'MD5.5cf0529234bac9935fc74f9579cc5be8',
+	);
+
+SCOPE: {
+	my $driver = driver_new();
+	$driver->start_document( {} );
+
+	# Create a test request
+	isa_ok( $file, 'PITA::XML::File' );
+	$driver->_parse_file( $file );
+
+	$driver->end_document( {} );	
+	my $request_string = <<"END_XML";
+<?xml version='1.0' encoding='UTF-8'?>
+<file xmlns='$XMLNS'>
+<filename>Foo-Bar-0.01.tar.gz</filename>
+<digest>MD5.5cf0529234bac9935fc74f9579cc5be8</digest>
+</file>
+END_XML
+	chomp $request_string;
+	$request_string =~ s/>\n</></g;
+	driver_is( $driver, $request_string, '->_parse_file works as expected' );	
+}
+
+
+
+
 my $request = PITA::XML::Request->new(
 	scheme    => 'perl5',
 	distname  => 'Foo-Bar',
-	filename  => 'Foo-Bar-0.01.tar.gz',
-	md5sum    => '5cf0529234bac9935fc74f9579cc5be8',
+	file      => $file,
 	authority => 'cpan',
 	authpath  => '/id/authors/A/AD/ADAMK/Foo-Bar-0.01.tar.gz',
 	);
@@ -164,8 +192,10 @@ SCOPE: {
 <request xmlns='$XMLNS'>
 <scheme>perl5</scheme>
 <distname>Foo-Bar</distname>
+<file>
 <filename>Foo-Bar-0.01.tar.gz</filename>
-<md5sum>5cf0529234bac9935fc74f9579cc5be8</md5sum>
+<digest>MD5.5cf0529234bac9935fc74f9579cc5be8</digest>
+</file>
 <authority>cpan</authority>
 <authpath>/id/authors/A/AD/ADAMK/Foo-Bar-0.01.tar.gz</authpath>
 </request>
@@ -336,8 +366,10 @@ SCOPE: {
 <request>
 <scheme>perl5</scheme>
 <distname>Foo-Bar</distname>
+<file>
 <filename>Foo-Bar-0.01.tar.gz</filename>
-<md5sum>5cf0529234bac9935fc74f9579cc5be8</md5sum>
+<digest>MD5.5cf0529234bac9935fc74f9579cc5be8</digest>
+</file>
 <authority>cpan</authority>
 <authpath>/id/authors/A/AD/ADAMK/Foo-Bar-0.01.tar.gz</authpath>
 </request>
@@ -378,8 +410,10 @@ SCOPE: {
 <request>
 <scheme>perl5</scheme>
 <distname>Foo-Bar</distname>
+<file>
 <filename>Foo-Bar-0.01.tar.gz</filename>
-<md5sum>5cf0529234bac9935fc74f9579cc5be8</md5sum>
+<digest>MD5.5cf0529234bac9935fc74f9579cc5be8</digest>
+</file>
 <authority>cpan</authority>
 <authpath>/id/authors/A/AD/ADAMK/Foo-Bar-0.01.tar.gz</authpath>
 </request>
@@ -482,8 +516,10 @@ my $report_string = <<"END_XML";
 <request>
 <scheme>perl5</scheme>
 <distname>Foo-Bar</distname>
+<file>
 <filename>Foo-Bar-0.01.tar.gz</filename>
-<md5sum>5cf0529234bac9935fc74f9579cc5be8</md5sum>
+<digest>MD5.5cf0529234bac9935fc74f9579cc5be8</digest>
+</file>
 <authority>cpan</authority>
 <authpath>/id/authors/A/AD/ADAMK/Foo-Bar-0.01.tar.gz</authpath>
 </request>

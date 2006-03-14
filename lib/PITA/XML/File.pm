@@ -1,13 +1,75 @@
 package PITA::XML::File;
 
-# A PITA::XML class that can be loaded from and saved to a file
+# A PITA::XML class that represents an file resource for a Guest
 
 use strict;
-use Params::Util '_INSTANCE';
+use base 'PITA::XML::Storable';
+use Data::Digest ();
+use Params::Util '_INSTANCE',
+                 '_STRING';
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.20';
+	$VERSION = '0.29';
+}
+
+sub xml_entity { 'file' }
+
+
+
+
+
+
+#####################################################################
+# Constructor and Accessors
+
+sub new {
+	my $class  = shift;
+
+	# Create the object
+	my $self = bless { @_ }, $class;
+
+	# Check the object
+	$self->_init;
+
+	$self;
+}
+
+# Format-check the parameters
+sub _init {
+	my $self = shift;
+
+	# The file name is required
+	unless ( _STRING($self->filename) ) {
+		Carp::croak('Missing or invalid filename');
+	}
+
+	# The resource descriptor is optional
+	if ( exists $self->{resource} ) {
+		unless ( _STRING($self->{resource}) ) {
+			Carp::croak('Cannot provide a null resource type');
+		}
+	}
+
+	# The digest is optional
+	if ( exists $self->{digest} ) {
+		eval { $self->{digest} = $self->_DIGEST($self->{digest}) };
+		Carp::croak("Missing or invalid digest") if $@;
+	}
+
+	$self;
+}
+
+sub filename {
+	$_[0]->{filename};
+}
+
+sub resource {
+	$_[0]->{resource};
+}
+
+sub digest {
+	$_[0]->{digest};
 }
 
 
@@ -17,46 +79,16 @@ BEGIN {
 #####################################################################
 # Main Methods
 
-sub read {
-	my $class = shift;
-	my $fh    = PITA::XML->_FH(shift);
 
-	### NOTE: DISABLED TILL WE FINALIZE THE SCHEMA
-	# Validate the document and reset the handle
-	# $class->validate( $fh );
-	# $fh->seek( 0, 0 ) or Carp::croak(
-	#	'Failed to reset file after validation (seek to 0)'
-	#	);
 
-	# Build the object from the file and validate
-	my $self = bless {}, $class;
-	my $parser = XML::SAX::ParserFactory->parser(
-		Handler => PITA::XML::SAXParser->new( $self ),
-		);
-        $parser->parse_file($fh);
 
-	$self;
-}
 
-sub write {
-	my $self = shift;
 
-	# Prepate the driver params
-	my @params = _INSTANCE($_[0], 'XML::SAX::Base')
-		? ( Handler => shift )
-		: defined($_[0])
-			? ( Output  => shift )
-			: Carp::croak("Did not provide an output destination to ->write");
+#####################################################################
+# Support Methods
 
-	# Create the SAX Driver
-	my $driver = PITA::XML::SAXDriver->new( @params )
-		or die("Failed to create SAXDriver for report");
-
-	# Parse ourself with the driver to driver the writing
-	# of the output.
-	$driver->parse( $self );
-
-	1;
+sub _DIGEST {
+	_INSTANCE($_[1], 'Data::Digest') ? $_[1] : Data::Digest->new($_[1]);
 }
 
 1;

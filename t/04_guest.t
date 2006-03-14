@@ -18,7 +18,7 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 17;
+use Test::More tests => 22;
 use PITA::XML ();
 
 sub dies_like {
@@ -42,44 +42,53 @@ SCOPE: {
 		);
 	isa_ok( $dist, 'PITA::XML::Guest' );
 	is( $dist->driver, 'Local', '->driver matches expected' );
-	is( $dist->filename, undef, '->filename returns undef'  );
-	is( $dist->md5sum, undef,   '->md5sum returns undef'    );
+	is_deeply( [ $dist->files ], [], '->files matches expected (list)' );
+	is( scalar($dist->files), 0, '->files matches expected (scalar)' );
 	is_deeply( $dist->config, {}, '->config returns an empty hash' );
 }
 
 # Create another one with more details
+my $file = PITA::XML::File->new(
+	filename => 'guest.img',
+	digest   => 'MD5.abcdefabcd0123456789abcdefabcd01',
+	resource => 'hda',
+	);
+isa_ok( $file, 'PITA::XML::File' );
+
 my @params = (
 	driver   => 'Image::Test',
-	filename => 'guest.img',
-	md5sum   => 'ABCDEFABCD0123456789ABCDEFABCD01',
 	memory   => 256,
 	snapshot => 1,
 	);
 SCOPE: {
 	my $dist = PITA::XML::Guest->new( @params );
 	isa_ok( $dist, 'PITA::XML::Guest' );
+	ok( $dist->add_file( $file ), '->add_file ok' );
 	is( $dist->driver,  'Image::Test', '->driver matches expected' );
-	is( $dist->filename, 'guest.img', '->filename returns undef'  );
-	is( $dist->md5sum,   'abcdefabcd0123456789abcdefabcd01',
-		'->md5sum returns undef' );
+	is( scalar($dist->files), 1, '->files returns as expected (scalar)' );
+	is( ($dist->files)[0]->filename, 'guest.img', '->filename returns undef'  );
+	is( ($dist->files)[0]->digest->as_string, 'MD5.abcdefabcd0123456789abcdefabcd01',
+		'->digest returns undef' );
 	is_deeply( $dist->config, { memory => 256, snapshot => 1 },
 		'->config returns the expected hash' );
 }
 
 # Load the same thing from a file
 SCOPE: {
-	my $file = catfile( 't', 'samples', 'guest.pita' );
-	ok( -f $file, 'Sample Guest file exists' );
-	my $dist = PITA::XML::Guest->read( $file );
+	my $filename = catfile( 't', 'samples', 'guest.pita' );
+	ok( -f $filename, 'Sample Guest file exists' );
+	my $dist = PITA::XML::Guest->read( $filename );
 	isa_ok( $dist, 'PITA::XML::Guest' );
 	is( $dist->driver,  'Image::Test', '->driver matches expected' );
-	is( $dist->filename, 'guest.img', '->filename returns undef'  );
-	is( $dist->md5sum,   'abcdefabcd0123456789abcdefabcd01',
+	is( ($dist->files)[0]->filename, 'guest.img', '->filename returns undef'  );
+	is( ($dist->files)[0]->digest->as_string, 'MD5.abcdefabcd0123456789abcdefabcd01',
 		'->md5sum returns undef' );
 	is_deeply( $dist->config, { memory => 256, snapshot => 1 },
 		'->config returns the expected hash' );
-	is_deeply( $dist, PITA::XML::Guest->new( @params ),
-		'File-loaded version exactly matches manually-created one' );
+	my $made = PITA::XML::Guest->new( @params );
+	isa_ok( $made, 'PITA::XML::Guest' );
+	ok( $made->add_file( $file ), '->add_file ok' );
+	is_deeply( $dist, $made, 'File-loaded version exactly matches manually-created one' );
 }
 
 exit(0);
