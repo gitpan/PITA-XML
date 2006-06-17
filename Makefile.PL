@@ -11,14 +11,14 @@ requires       'IO::String'              => '1.06';
 requires       'File::Which'             => '0.05';
 requires       'File::ShareDir'          => '0.02';
 requires       'Params::Util'            => '0.10';
+requires       'Class::Inspector'        => '1.11';
 requires       'Class::Autouse'          => '1.23';
 requires       'Data::Digest'            => '0.02';
-requires       'XML::SAX::Writer'        => '0.43';
+requires       'XML::SAX::Writer'        => '0.44';
 requires       'XML::SAX::ParserFactory' => '0.13';
 requires       'XML::Validator::Schema'  => '1.08';
 build_requires 'File::Spec'              => '0.80';
 build_requires 'Test::More'              => '0.47';
 install_share;
 
-auto_install;
 WriteAll;

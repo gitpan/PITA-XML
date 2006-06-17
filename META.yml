@@ -1,30 +1,31 @@
-
-no_index: 
-  directory: 
+abstract: 'Create, load, save and manipulate PITA-XML files'
+author: 'Adam Kennedy <cpan@ali.as>, L<http://ali.as/>'
+build_requires:
+  ExtUtils::MakeMaker: 6.11
+  File::Spec: 0.80
+  Test::More: 0.47
+distribution_type: module
+generated_by: Module::Install version 0.63
+license: perl
+name: PITA-XML
+no_index:
+  directory:
     - inc
     - t
-generated_by: Module::Install version 0.60
-distribution_type: module
-version: 0.29
-name: PITA-XML
-author: Adam Kennedy <cpan@ali.as>, L<http://ali.as/>
-license: perl
-build_requires: 
-  Test::More: 0.47
-  File::Spec: 0.80
-requires: 
-  XML::SAX::ParserFactory: 0.13
-  Class::Autouse: 1.23
-  IO::Seekable: 0
-  IO::File: 0
-  IO::String: 1.06
-  IO::Handle: 0
-  File::Which: 0.05
+requires:
   Carp: 0
+  Class::Autouse: 1.23
+  Class::Inspector: 1.11
+  Data::Digest: 0.02
+  File::ShareDir: 0.02
+  File::Which: 0.05
+  IO::File: 0
+  IO::Handle: 0
+  IO::Seekable: 0
+  IO::String: 1.06
+  Params::Util: 0.10
+  XML::SAX::ParserFactory: 0.13
+  XML::SAX::Writer: 0.44
   XML::Validator::Schema: 1.08
   perl: 5.005
-  Params::Util: 0.10
-  File::ShareDir: 0.02
-  XML::SAX::Writer: 0.43
-  Data::Digest: 0.02
-abstract: Create, load, save and manipulate PITA-XML files
+version: 0.30
