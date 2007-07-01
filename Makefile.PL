@@ -1,3 +1,4 @@
+use strict;
 use inc::Module::Install;
 
 name           'PITA-XML';
@@ -19,6 +20,7 @@ requires       'XML::SAX::ParserFactory' => '0.13';
 requires       'XML::Validator::Schema'  => '1.08';
 build_requires 'File::Spec'              => '0.80';
 build_requires 'Test::More'              => '0.47';
+build_requires 'Test::LongString'        => 0;
 install_share;
 
 WriteAll;

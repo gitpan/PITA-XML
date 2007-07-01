@@ -60,7 +60,7 @@ t/10_sample.t
 t/11_saxdriver.t
 t/12_roundtrip.t
 t/13_ids.t
-t/99_pod.t
+t/99_author.t
 t/request/PITA-Test-Dummy-Perl5-Make-1.01.tar.gz
 t/request/request.pita
 t/samples/empty.pita

@@ -1,18 +1,23 @@
-abstract: 'Create, load, save and manipulate PITA-XML files'
-author: 'Adam Kennedy <cpan@ali.as>, L<http://ali.as/>'
-build_requires:
+--- 
+abstract: Create, load, save and manipulate PITA-XML files
+author: Adam Kennedy <adamk@cpan.org>, L<http://ali.as/>
+build_requires: 
   ExtUtils::MakeMaker: 6.11
   File::Spec: 0.80
+  Test::LongString: 0
   Test::More: 0.47
 distribution_type: module
-generated_by: Module::Install version 0.63
+generated_by: Module::Install version 0.67
 license: perl
+meta-spec: 
+  url: http://module-build.sourceforge.net/META-spec-v1.3.html
+  version: 1.3
 name: PITA-XML
-no_index:
-  directory:
+no_index: 
+  directory: 
     - inc
     - t
-requires:
+requires: 
   Carp: 0
   Class::Autouse: 1.23
   Class::Inspector: 1.11
@@ -28,4 +33,4 @@ requires:
   XML::SAX::Writer: 0.44
   XML::Validator::Schema: 1.08
   perl: 5.005
-version: 0.30
+version: 0.40
