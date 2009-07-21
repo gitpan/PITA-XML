@@ -28,7 +28,7 @@ use PITA::XML      ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.40';
+	$VERSION = '0.41';
 }
 
 
@@ -304,7 +304,10 @@ sub _parse_guest {
 	my ($self, $guest) = @_;
 
 	# Send the open tag
-	my $element = $self->_element( 'guest' );
+	my $attr = $guest->id
+		? { id => $guest->id }
+		: { };
+	my $element = $self->_element( 'guest', $attr );
 	$self->start_element( $element );
 
 	# Send the main accessors
@@ -624,7 +627,7 @@ The Perl Image-based Testing Architecture (L<http://ali.as/pita/>)
 
 =head1 COPYRIGHT
 
-Copyright 2005, 2006 Adam Kennedy.
+Copyright 2005 - 2009 Adam Kennedy.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

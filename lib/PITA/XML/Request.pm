@@ -49,7 +49,7 @@ use Params::Util   '_INSTANCE',
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.40';
+	$VERSION = '0.41';
 }
 
 sub xml_entity { 'request' }
@@ -79,8 +79,8 @@ sub _init {
 
 	# Check the id, if it has one
 	if ( defined $self->id ) {
-		unless ( _STRING($self->id) ) {
-			Carp::croak('Invalid id value');
+		unless ( PITA::XML->_GUID($self->id) ) {
+			Carp::croak('Invalid id value format');
 		}
 	}
 
@@ -137,7 +137,7 @@ sub _init {
 =head2 id
 
 The C<id> accessor returns the unique identifier of the request, if
-it has one. This will generally be some form of L<Data::UUID> string.
+it has one. This should be some form of L<Data::UUID> string.
 
 Returns the identifier as a string, or C<undef> if the request has not
 been assigned an id.
@@ -299,7 +299,7 @@ The Perl Image-based Testing Architecture (L<http://ali.as/pita/>)
 
 =head1 COPYRIGHT
 
-Copyright 2005, 2006 Adam Kennedy.
+Copyright 2005 - 2009 Adam Kennedy.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

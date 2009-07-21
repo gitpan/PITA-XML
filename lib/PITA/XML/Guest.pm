@@ -38,7 +38,7 @@ use Params::Util     '_INSTANCE',
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.40';
+	$VERSION = '0.41';
 }
 
 sub xml_entity { 'guest' }
@@ -51,9 +51,10 @@ sub xml_entity { 'guest' }
 # Constructor and Accessors
 
 my %ALLOWED = (
-	driver   => 1,
-	config   => 1,
-	);
+	id     => 1,
+	driver => 1,
+	config => 1,
+);
 
 =pod
 
@@ -144,6 +145,13 @@ sub read {
 sub _init {
 	my $self = shift;
 
+	# Check the id, if it has one
+	if ( defined $self->id ) {
+		unless ( PITA::XML->_GUID($self->id) ) {
+			Carp::croak('The id value is not a valid 8-4-4-4-12 GUID');
+		}
+	}
+
 	# Requires a driver
 	unless ( _CLASS($self->driver) ) {
 		Carp::croak('Missing or invalid driver');
@@ -167,6 +175,44 @@ sub _init {
 	}
 
 	$self;
+}
+
+
+=pod
+
+=head2 id
+
+The C<id> accessor returns the unique identifier of the request, if
+it has one. This will generally be some form of L<Data::UUID> string.
+
+Returns the identifier as a string, or C<undef> if the request has not
+been assigned an id.
+
+=cut
+
+sub id {
+	$_[0]->{id};
+}
+
+=pod
+
+=head2 set_id
+
+If an object does not already have an C<id> property, the C<set_id> method
+will let you assign one to the guest. Takes a valid GUID "8-4-4-4-12" string
+and sets the object with it, or croaks on error.
+
+=cut
+
+sub set_id {
+	my $self = shift;
+	my $guid = PITA::XML->_GUID(shift)
+		or Carp::croak("Invalid GUID format");
+	if ( $self->id ) {
+		Carp::croak("The guest already has an id value");
+	}
+	$self->{id} = $guid;
+	return 1;
 }
 
 =pod
@@ -364,7 +410,7 @@ The Perl Image Testing Architecture (L<http://ali.as/pita/>)
 
 =head1 COPYRIGHT
 
-Copyright 2005, 2006 Adam Kennedy.
+Copyright 2005 - 2009 Adam Kennedy.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

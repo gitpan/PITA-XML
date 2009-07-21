@@ -34,14 +34,14 @@ use Params::Util '_INSTANCE';
 
 use vars qw{$VERSION $XML_NAMESPACE @PROPERTIES %TRIM};
 BEGIN {
-	$VERSION = '0.40';
+	$VERSION = '0.41';
 
 	# Define the XML namespace we are a parser for
 	$XML_NAMESPACE = 'http://ali.as/xml/schemas/PITA/1.0';
 
 	# The name/tags for the simple properties
 	@PROPERTIES = qw{
-		driver
+		id         driver
 		scheme     distname
 		filename   resource  digest
 		authority  authpath
@@ -530,7 +530,7 @@ The Perl Image-based Testing Architecture (L<http://ali.as/pita/>)
 
 =head1 COPYRIGHT
 
-Copyright 2005, 2006 Adam Kennedy.
+Copyright 2005 - 2009 Adam Kennedy.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
