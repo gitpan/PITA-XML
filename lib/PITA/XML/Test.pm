@@ -17,12 +17,11 @@ output from a single test script.
 
 use strict;
 use Carp         ();
-use Params::Util '_STRING',
-                 '_SCALAR0';
+use Params::Util qw{ _STRING _SCALAR0 };
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.41';
+	$VERSION = '0.43';
 }
 
 
@@ -46,9 +45,7 @@ Returns a C<PITA::XML::Text> object, or dies on error.
 
 sub new {
 	my $class = shift;
-
-	# Create the object
-	my $self = bless { @_ }, $class;
+	my $self  = bless { @_ }, $class;
 
 	# Check the object
 	$self->_init;
@@ -197,7 +194,7 @@ The Perl Image-based Testing Architecture (L<http://ali.as/pita/>)
 
 =head1 COPYRIGHT
 
-Copyright 2005 - 2009 Adam Kennedy.
+Copyright 2005 - 2011 Adam Kennedy.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

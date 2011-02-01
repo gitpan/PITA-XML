@@ -14,14 +14,14 @@ single host of an arbitrary platform.
 
 =cut
 
+use 5.006;
 use strict;
-use Carp ();
-use Params::Util '_INSTANCE',
-                 '_SET0';
+use Carp         ();
+use Params::Util qw{ _INSTANCE _SET0 };
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.41';
+	$VERSION = '0.43';
 }
 
 
@@ -50,10 +50,8 @@ Returns a new C<PITA::XML::Install> object, or dies on error.
 =cut
 
 sub new {
-	my $class  = shift;
-
-	# Create the object
-	my $self = bless { @_ }, $class;
+	my $class = shift;
+	my $self  = bless { @_ }, $class;
 
 	# Check the object
 	$self->_init;
@@ -249,7 +247,7 @@ The Perl Image-based Testing Architecture (L<http://ali.as/pita/>)
 
 =head1 COPYRIGHT
 
-Copyright 2005 - 2009 Adam Kennedy.
+Copyright 2005 - 2011 Adam Kennedy.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

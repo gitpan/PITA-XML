@@ -25,6 +25,7 @@ doc/PITA-Schema_p9.png
 inc/Module/Install.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
+inc/Module/Install/DSL.pm
 inc/Module/Install/Fetch.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
@@ -60,12 +61,12 @@ t/10_sample.t
 t/11_saxdriver.t
 t/12_roundtrip.t
 t/13_ids.t
-t/97_meta.t
-t/98_pod.t
-t/99_pmv.t
 t/request/PITA-Test-Dummy-Perl5-Make-1.01.tar.gz
 t/request/request.pita
 t/samples/empty.pita
 t/samples/guest.img
 t/samples/guest.pita
 t/samples/single.pita
+xt/meta.t
+xt/pmv.t
+xt/pod.t

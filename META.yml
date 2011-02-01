@@ -11,7 +11,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.42
 distribution_type: module
-generated_by: 'Module::Install version 0.91'
+generated_by: 'Module::Install version 1.00'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -23,18 +23,19 @@ no_index:
     - inc
     - share
     - t
+    - xt
 requires:
   Carp: 0
   Class::Autouse: 1.23
   Class::Inspector: 1.11
   Data::Digest: 0.02
   File::ShareDir: 0.02
-  File::Which: 0.05
+  File::Which: 1.07
   IO::File: 0
   IO::Handle: 0
   IO::Seekable: 0
   IO::String: 1.06
-  Params::Util: 0.10
+  Params::Util: 1.00
   XML::SAX::ParserFactory: 0.13
   XML::SAX::Writer: 0.44
   XML::Validator::Schema: 1.08
@@ -43,4 +44,4 @@ resources:
   ChangeLog: http://fisheye2.atlassian.com/changelog/cpan/trunk/PITA-XML
   license: http://dev.perl.org/licenses/
   repository: http://svn.ali.as/cpan/trunk/PITA-XML
-version: 0.41
+version: 0.43
