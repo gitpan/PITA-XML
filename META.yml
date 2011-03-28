@@ -28,6 +28,7 @@ requires:
   Carp: 0
   Class::Autouse: 1.23
   Class::Inspector: 1.11
+  Config::Tiny: 2.00
   Data::Digest: 0.02
   File::ShareDir: 0.02
   File::Which: 1.07
@@ -43,4 +44,4 @@ resources:
   ChangeLog: http://fisheye2.atlassian.com/changelog/cpan/trunk/PITA-XML
   license: http://dev.perl.org/licenses/
   repository: http://svn.ali.as/cpan/trunk/PITA-XML
-version: 0.50
+version: 0.51
