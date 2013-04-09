@@ -9,7 +9,7 @@ BEGIN {
 }
 
 use Test::More tests => 40;
-use Test::LongString;
+use Test::XML;
 use Config           ();
 use PITA::XML        ();
 use XML::SAX::Writer ();
@@ -38,7 +38,7 @@ sub driver_is {
 	$string =~ s/>\n</></g;
 
 	# Compare the two
-	is_string( $$output, $string, $message );
+	is_xml( $$output, $string, $message );
 }
 
 
@@ -593,4 +593,4 @@ $report_string =~ s/>\n</></g;
 # Try the normal way
 my $string = '';
 ok( $report->write( \$string ), '->write returns true for report' );
-is_string( $string, $report_string, '->write outputs the expected XML' );
+is_xml( $string, $report_string, '->write outputs the expected XML' );
